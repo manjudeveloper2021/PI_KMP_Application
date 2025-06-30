@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
     alias(libs.plugins.androidLibrary)
-//    alias(libs.plugins.kotlinCocoapods)
+
     alias(libs.plugins.kotlinx.serialization)
 }
 
@@ -28,6 +28,14 @@ kotlin {
     sourceSets {
         androidMain.dependencies {
             implementation(libs.ktor.client.android)
+            implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.converter.gson)
+            implementation(libs.gson)
+            implementation(libs.koin.androidx.compose)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.navigation) // if using Navigation
+            implementation(libs.androidx.ui.text)
+            implementation(libs.androidx.ui.text.android)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.ios)
@@ -40,8 +48,11 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.content.negotiation)
 
-            implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.kotlinx.coroutines.core)
+            api(libs.touchlab.kermit)
+            implementation(libs.koin.core)
+
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -51,7 +62,7 @@ kotlin {
 
 android {
     namespace = "com.pi.ProjectInclusion"
-    compileSdk = 34
+    compileSdk = 35
     defaultConfig {
         minSdk = 24
     }
@@ -59,4 +70,25 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE",
+                "META-INF/NOTICE.md",
+                "META-INF/NOTICE",
+                "META-INF/AL2.0",
+                "META-INF/LGPL2.1",
+                "META-INF/*.kotlin_module"
+            )
+        }
+    }
+}
+dependencies {
+//    implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.ui.tooling.preview.android)
+    implementation(libs.activity.compose)
+    implementation(libs.androidx.databinding.compiler)
+
+
 }
